@@ -1,9 +1,19 @@
 const express = require("express");
+const { Server } = require("socket.io");
+const path = require("path");
 const app = express();
+
+// Porta dinâmica do Render (fallback 3000 para desenvolvimento local)
+const PORT = process.env.PORT || 3000;
+
+// Servir arquivos estáticos
+app.use(express.static(path.join(__dirname, "public")));
+
+// Criar servidor HTTP (Render exige HTTP)
 const http = require("http");
 const server = http.createServer(app);
-const { Server } = require("socket.io");
 
+// Criar servidor WebSocket
 const io = new Server(server, {
     cors: {
         origin: "*",
@@ -11,67 +21,64 @@ const io = new Server(server, {
     }
 });
 
-const rooms = {}; // <- armazena usuários por sala
+// Lista de salas
+let rooms = {};
 
 io.on("connection", (socket) => {
-    console.log("Novo cliente:", socket.id);
+    console.log("Novo cliente conectado:", socket.id);
 
-    // Criar ou entrar na sala
-    socket.on("join-room", (roomId) => {
-        console.log(`Cliente ${socket.id} pediu para entrar na sala ${roomId}`);
+    // Listar salas atuais
+    socket.emit("rooms", Object.keys(rooms));
 
-        // Se a sala não existe → cria
-        if (!rooms[roomId]) {
-            rooms[roomId] = [];
+    // Criar sala
+    socket.on("createRoom", (room) => {
+        if (!rooms[room]) {
+            rooms[room] = [];
         }
+        rooms[room].push(socket.id);
 
-        // Impedir duplicação de sala e duplicação de cliente
-        if (!rooms[roomId].includes(socket.id)) {
-            rooms[roomId].push(socket.id);
-            socket.join(roomId);
-        }
-
-        console.log("Estado das salas:", rooms);
-
-        // Se já existe alguém na sala → enviar "user-connected"
-        const otherUsers = rooms[roomId].filter(id => id !== socket.id);
-
-        if (otherUsers.length > 0) {
-            console.log(`Notificando ${socket.id} sobre ${otherUsers[0]}`);
-            socket.to(roomId).emit("user-connected", socket.id);
-            socket.emit("user-connected", otherUsers[0]);
-        }
+        socket.join(room);
+        io.emit("rooms", Object.keys(rooms)); // Atualiza a lista para todos
+        console.log(`Sala criada: ${room}`);
     });
 
-    // WebRTC: repasse de sinalização
+    // Entrar na sala
+    socket.on("joinRoom", (room) => {
+        if (!rooms[room]) {
+            socket.emit("error", "Sala não existe!");
+            return;
+        }
+
+        rooms[room].push(socket.id);
+        socket.join(room);
+        console.log(`Cliente ${socket.id} entrou na sala ${room}`);
+    });
+
+    // WebRTC Signaling
     socket.on("offer", (data) => {
-        socket.to(data.roomId).emit("offer", data);
+        socket.to(data.room).emit("offer", data);
     });
 
     socket.on("answer", (data) => {
-        socket.to(data.roomId).emit("answer", data);
+        socket.to(data.room).emit("answer", data);
     });
 
-    socket.on("ice-candidate", (data) => {
-        socket.to(data.roomId).emit("ice-candidate", data);
+    socket.on("candidate", (data) => {
+        socket.to(data.room).emit("candidate", data);
     });
 
+    // Desconectar
     socket.on("disconnect", () => {
-        console.log("Cliente desconectou:", socket.id);
-
-        for (const roomId in rooms) {
-            rooms[roomId] = rooms[roomId].filter(id => id !== socket.id);
-
-            if (rooms[roomId].length === 0) {
-                delete rooms[roomId];
-            }
+        for (const room in rooms) {
+            rooms[room] = rooms[room].filter(id => id !== socket.id);
+            if (rooms[room].length === 0) delete rooms[room];
         }
-
-        console.log("Estado atualizado:", rooms);
+        io.emit("rooms", Object.keys(rooms));
+        console.log("Cliente desconectado:", socket.id);
     });
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, "0.0.0.0", () => {
-    console.log("Servidor rodando na porta " + PORT);
+// Iniciar servidor HTTP
+server.listen(PORT, () => {
+    console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
