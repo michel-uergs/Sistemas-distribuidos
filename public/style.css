@@ -1,638 +1,99 @@
-/* ========================================
-   RESET E VARIÁVEIS
-======================================== */
+/* ======== RESET ======== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-:root {
-    --primary: #667eea;
-    --primary-dark: #5568d3;
-    --secondary: #48bb78;
-    --secondary-dark: #38a169;
-    --danger: #f56565;
-    --danger-dark: #e53e3e;
-    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --text: #2d3748;
-    --text-light: #718096;
-    --border: #e2e8f0;
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
-    --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
-}
-
+/* ======== LAYOUT GERAL ======== */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg-gradient);
-    color: var(--text);
-    line-height: 1.6;
-    overflow: hidden;
-}
-
-/* ========================================
-   UTILIDADES
-======================================== */
-.hidden {
-    display: none !important;
-}
-
-.screen {
+    background: #f3f3f3;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 20px;
 }
 
-/* ========================================
-   LOBBY (TELA DE ENTRADA)
-======================================== */
-.lobby-container {
-    background: white;
-    border-radius: 24px;
-    padding: 48px;
-    max-width: 480px;
+.container {
     width: 100%;
-    box-shadow: var(--shadow-lg);
-    animation: slideUp 0.5s ease;
-}
-
-.lobby-header {
-    text-align: center;
-    margin-bottom: 32px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.logo-icon {
-    font-size: 48px;
-    animation: bounce 2s infinite;
-}
-
-.logo h1 {
-    font-size: 36px;
-    font-weight: 700;
-    color: var(--primary);
-    letter-spacing: -1px;
-}
-
-.subtitle {
-    color: var(--text-light);
-    font-size: 16px;
-}
-
-.lobby-form {
-    margin-bottom: 24px;
-}
-
-.input-group {
-    margin-bottom: 24px;
-}
-
-.input-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.input-group .icon {
-    font-size: 18px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    font-size: 16px;
-    transition: all 0.3s;
-    background: #f7fafc;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: var(--primary);
+    max-width: 450px;
     background: white;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.input-group small {
-    display: block;
-    margin-top: 4px;
-    color: var(--text-light);
-    font-size: 13px;
-}
-
-.button-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 24px;
-}
-
-.btn {
-    padding: 14px 24px;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.btn span:first-child {
-    font-size: 20px;
-}
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.btn-secondary {
-    background: var(--secondary);
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: var(--secondary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
-}
-
-.btn-danger {
-    background: var(--danger);
-    color: white;
-}
-
-.btn-danger:hover {
-    background: var(--danger-dark);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-.features {
-    display: flex;
-    justify-content: space-around;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-}
-
-.feature-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: var(--text-light);
-}
-
-.feature-icon {
-    font-size: 28px;
-}
-
-/* ========================================
-   ROOM (SALA DE VIDEOCHAMADA)
-======================================== */
-#room {
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.room-header {
-    background: white;
-    padding: 16px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: var(--shadow-sm);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.room-info h2 {
-    font-size: 20px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-}
-
-.room-code {
-    font-family: 'Courier New', monospace;
-    background: #edf2f7;
-    padding: 4px 12px;
-    border-radius: 8px;
-    color: var(--primary);
-    font-size: 18px;
-}
-
-.participants {
-    color: var(--text-light);
-    font-size: 14px;
-}
-
-.header-actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-}
-
-.btn-icon {
-    background: #f7fafc;
-    border: 2px solid var(--border);
-    width: 44px;
-    height: 44px;
+    padding: 20px;
     border-radius: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
 
-.btn-icon:hover {
-    background: #edf2f7;
-    transform: translateY(-2px);
+/* ======== TÍTULOS ======== */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 15px;
 }
 
-/* ========================================
-   GRID DE VÍDEOS
-======================================== */
-.video-grid {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 16px;
-    padding: 20px;
-    overflow-y: auto;
-    max-height: calc(100vh - 180px);
-}
-
-/* 1 vídeo - tela cheia */
-.video-grid:has(.video-wrapper:nth-child(1):last-child) {
-    grid-template-columns: 1fr;
-    place-items: center;
-}
-
-.video-grid:has(.video-wrapper:nth-child(1):last-child) .video-wrapper {
-    max-width: 1000px;
+/* ======== FORM ======== */
+input {
     width: 100%;
-}
-
-/* 2 vídeos - lado a lado */
-.video-grid:has(.video-wrapper:nth-child(2)) {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.video-wrapper {
-    position: relative;
-    background: #1a202c;
-    border-radius: 16px;
-    overflow: hidden;
-    aspect-ratio: 16/9;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.3s;
-}
-
-.video-wrapper:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-}
-
-.video-wrapper.local-video {
-    border: 3px solid var(--primary);
-}
-
-.video-wrapper video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.video-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.5) 0%,
-        transparent 30%,
-        transparent 70%,
-        rgba(0,0,0,0.5) 100%
-    );
-    pointer-events: none;
-}
-
-.video-info {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.video-info .name {
-    background: rgba(0,0,0,0.8);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.indicators {
-    display: flex;
-    gap: 8px;
-}
-
-.indicator {
-    background: rgba(0,0,0,0.8);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-
-.indicator.off {
-    background: rgba(239, 68, 68, 0.9);
-}
-
-/* ========================================
-   CONTROLES
-======================================== */
-.controls {
-    background: white;
-    padding: 16px 20px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-    position: sticky;
-    bottom: 0;
-}
-
-.controls-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.control-btn {
-    background: #f7fafc;
-    border: 2px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    transition: all 0.3s;
-    min-width: 80px;
-}
-
-.control-btn .icon {
-    font-size: 24px;
-}
-
-.control-btn .label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.control-btn:hover {
-    background: #edf2f7;
-    transform: translateY(-2px);
-}
-
-.control-btn.active {
-    background: var(--secondary);
-    border-color: var(--secondary);
-}
-
-.control-btn.active .label {
-    color: white;
-}
-
-.control-btn.danger {
-    background: var(--danger);
-    border-color: var(--danger);
-}
-
-.control-btn.danger .label {
-    color: white;
-}
-
-.control-btn.danger:hover {
-    background: var(--danger-dark);
-}
-
-.divider {
-    width: 2px;
-    height: 50px;
-    background: var(--border);
-}
-
-/* ========================================
-   TOAST (NOTIFICAÇÕES)
-======================================== */
-.toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(26, 32, 44, 0.95);
-    color: white;
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: var(--shadow-lg);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 1000;
-    animation: slideInRight 0.3s ease;
-    max-width: 400px;
-}
-
-.toast-icon {
-    font-size: 24px;
-}
-
-.toast-message {
-    font-size: 15px;
-}
-
-/* ========================================
-   LOADING
-======================================== */
-.loading {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    z-index: 9999;
-}
-
-.spinner {
-    width: 60px;
-    height: 60px;
-    border: 4px solid rgba(255,255,255,0.2);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-.loading p {
-    color: white;
-    font-size: 18px;
-    font-weight: 500;
-}
-
-/* ========================================
-   ANIMAÇÕES
-======================================== */
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(400px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* ========================================
-   SCROLLBAR
-======================================== */
-.video-grid::-webkit-scrollbar {
-    width: 10px;
-}
-
-.video-grid::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-}
-
-.video-grid::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.3);
+    padding: 10px;
+    margin: 8px 0;
     border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
-/* ========================================
-   RESPONSIVO
-======================================== */
-@media (max-width: 768px) {
-    .lobby-container {
-        padding: 32px 24px;
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0066ff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #0052cc;
+}
+
+/* ======== VIDEOS ======== */
+.video-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+video {
+    width: 100%;
+    max-width: 350px;
+    background: black;
+    border-radius: 8px;
+}
+
+/* ======== MOBILE ======== */
+@media (max-width: 600px) {
+    .container {
+        max-width: 100%;
+        padding: 15px;
     }
 
-    .video-grid {
-        grid-template-columns: 1fr !important;
-        padding: 12px;
-    }
-
-    .room-header {
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-    }
-
-    .header-actions {
-        width: 100%;
-        justify-content: flex-end;
-    }
-
-    .controls-wrapper {
-        gap: 8px;
-    }
-
-    .control-btn {
-        min-width: 70px;
+    button {
+        font-size: 15px;
         padding: 10px;
     }
 
-    .control-btn .icon {
-        font-size: 20px;
-    }
-
-    .control-btn .label {
-        font-size: 11px;
-    }
-
-    .toast {
-        left: 12px;
-        right: 12px;
-        top: 12px;
+    video {
+        max-width: 100%;
     }
 }
 
-@media (max-width: 480px) {
-    .control-btn .label {
-        display: none;
-    }
-
-    .divider {
-        display: none;
-    }
+/* ======== RODAPÉ ======== */
+.footer {
+    text-align: center;
+    padding-top: 15px;
+    font-size: 14px;
+    opacity: 0.7;
 }
