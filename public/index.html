@@ -1,162 +1,34 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Sistema de videochamadas distribuído com WebRTC">
-    <title>VideoCall - Videochamadas WebRTC</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <title>VideoCall</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 12px }
+    #videoGrid { display:flex; gap:8px; flex-wrap:wrap }
+    video { width: 300px; height: 200px; background: #000 }
+  </style>
 </head>
 <body>
-    <!-- TELA DE ENTRADA (LOBBY) -->
-    <div id="lobby" class="screen">
-        <div class="lobby-container">
-            <div class="lobby-header">
-                <div class="logo">
-                    <span class="logo-icon">🎥</span>
-                    <h1>VideoCall</h1>
-                </div>
-                <p class="subtitle">Sistema de videochamadas em tempo real</p>
-            </div>
+  <h2>VideoCall</h2>
+  <div id="lobby">
+    <input id="userName" placeholder="Seu nome" />
+    <input id="roomId" placeholder="Código da sala (opcional)" />
+    <button id="createRoom">Criar sala</button>
+    <button id="joinRoom">Entrar na sala</button>
+  </div>
 
-            <div class="lobby-form">
-                <div class="input-group">
-                    <label for="userName">
-                        <span class="icon">👤</span>
-                        Seu nome
-                    </label>
-                    <input 
-                        type="text" 
-                        id="userName" 
-                        placeholder="Digite seu nome"
-                        autocomplete="off"
-                        required
-                    >
-                </div>
-
-                <div class="input-group">
-                    <label for="roomId">
-                        <span class="icon">🚪</span>
-                        Código da sala
-                    </label>
-                    <input 
-                        type="text" 
-                        id="roomId" 
-                        placeholder="Digite ou deixe em branco"
-                        autocomplete="off"
-                    >
-                    <small>Deixe em branco para criar uma nova sala</small>
-                </div>
-
-                <div class="button-container">
-                    <button id="createRoom" class="btn btn-primary">
-                        <span>➕</span>
-                        Criar Nova Sala
-                    </button>
-                    <button id="joinRoom" class="btn btn-secondary">
-                        <span>🚀</span>
-                        Entrar na Sala
-                    </button>
-                </div>
-            </div>
-
-            <div class="features">
-                <div class="feature-item">
-                    <span class="feature-icon">🔒</span>
-                    <span>Seguro</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">⚡</span>
-                    <span>Rápido</span>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🌐</span>
-                    <span>WebRTC</span>
-                </div>
-            </div>
-        </div>
+  <div id="room" style="display:none">
+    <div>
+      Sala: <span id="currentRoomId"></span>
+      <button id="leaveCall">Sair</button>
     </div>
-
-    <!-- TELA DE VIDEOCHAMADA -->
-    <div id="room" class="screen hidden">
-        <!-- Cabeçalho -->
-        <header class="room-header">
-            <div class="room-info">
-                <h2>
-                    <span class="icon">📹</span>
-                    Sala: <span id="currentRoomId" class="room-code"></span>
-                </h2>
-                <p id="participantCount" class="participants">1 participante</p>
-            </div>
-            <div class="header-actions">
-                <button id="copyRoomId" class="btn-icon" title="Copiar código da sala">
-                    📋
-                </button>
-                <button id="leaveRoom" class="btn btn-danger">
-                    🚪 Sair
-                </button>
-            </div>
-        </header>
-
-        <!-- Grid de Vídeos -->
-        <main class="video-grid" id="videoGrid">
-            <!-- Vídeo Local -->
-            <div class="video-wrapper local-video" id="localVideoWrapper">
-                <video id="localVideo" autoplay muted playsinline></video>
-                <div class="video-overlay">
-                    <div class="video-info">
-                        <span class="name">Você</span>
-                        <div class="indicators">
-                            <span class="indicator" id="localAudioIndicator">🎤</span>
-                            <span class="indicator" id="localVideoIndicator">📹</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Controles -->
-        <footer class="controls">
-            <div class="controls-wrapper">
-                <button id="toggleAudio" class="control-btn active" title="Microfone">
-                    <span class="icon">🎤</span>
-                    <span class="label">Microfone</span>
-                </button>
-
-                <button id="toggleVideo" class="control-btn active" title="Câmera">
-                    <span class="icon">📹</span>
-                    <span class="label">Câmera</span>
-                </button>
-
-                <button id="shareScreen" class="control-btn" title="Compartilhar tela">
-                    <span class="icon">🖥️</span>
-                    <span class="label">Compartilhar</span>
-                </button>
-
-                <div class="divider"></div>
-
-                <button id="leaveCall" class="control-btn danger" title="Encerrar chamada">
-                    <span class="icon">📞</span>
-                    <span class="label">Encerrar</span>
-                </button>
-            </div>
-        </footer>
+    <div id="videoGrid">
+      <div id="localVideoWrapper"><video id="localVideo" autoplay muted playsinline></video></div>
     </div>
+  </div>
 
-    <!-- Notificações Toast -->
-    <div id="toast" class="toast hidden">
-        <span class="toast-icon">ℹ️</span>
-        <span class="toast-message"></span>
-    </div>
-
-    <!-- Loading -->
-    <div id="loading" class="loading hidden">
-        <div class="spinner"></div>
-        <p>Conectando...</p>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script>
-    <script src="client.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
 </body>
 </html>
