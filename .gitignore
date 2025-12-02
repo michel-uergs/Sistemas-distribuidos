@@ -40,6 +40,8 @@ build/
 *.key
 *.crt
 *.csr
+*.cnf
+
 cert/
 certs/
 ssl/
