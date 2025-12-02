@@ -1,0 +1,80 @@
+# ============================
+# Node.js
+# ============================
+
+# Dependências
+/node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Ambiente
+.env
+.env.local
+.env.production
+.env.development
+
+# Cache
+/.cache
+/.tmp
+
+# PM2
+.pids
+*.pid
+*.seed
+*.pid.lock
+
+# Build
+dist/
+build/
+
+# ============================
+# Certificados SSL
+# (NUNCA subir certificados no Git)
+# ============================
+*.pem
+*.key
+*.crt
+*.csr
+cert/
+certs/
+ssl/
+*.pfx
+*.der
+
+# ============================
+# Sistema Operacional
+# ============================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ============================
+# IDEs / Editores
+# ============================
+# VSCode
+.vscode/
+.history/
+
+# JetBrains
+.idea/
+*.iml
+
+# ============================
+# Render Deploy
+# ============================
+# Arquivos que o Render cria em tempo de execução
+render.yaml
