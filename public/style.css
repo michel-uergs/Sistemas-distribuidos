@@ -1,99 +1,211 @@
-/* ======== RESET ======== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* ======== LAYOUT GERAL ======== */
-body {
-    background: #f3f3f3;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #333;
+    }
 
-.container {
-    width: 100%;
-    max-width: 450px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.2);
-}
+    h2 {
+      color: white;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
 
-/* ======== TÍTULOS ======== */
-h1, h2 {
-    text-align: center;
-    margin-bottom: 15px;
-}
+    #lobby {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-/* ======== FORM ======== */
-input {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+    input {
+      padding: 14px 18px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      outline: none;
+    }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background: #0066ff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-button:hover {
-    background: #0052cc;
-}
-
-/* ======== VIDEOS ======== */
-.video-wrapper {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-video {
-    width: 100%;
-    max-width: 350px;
-    background: black;
-    border-radius: 8px;
-}
-
-/* ======== MOBILE ======== */
-@media (max-width: 600px) {
-    .container {
-        max-width: 100%;
-        padding: 15px;
+    input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
     button {
-        font-size: 15px;
-        padding: 10px;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #createRoom, #joinRoom {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    #createRoom:hover, #joinRoom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    #createRoom:active, #joinRoom:active {
+      transform: translateY(0);
+    }
+
+    #room {
+      width: 100%;
+      max-width: 1400px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    #room > div:first-child {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #f0f0f0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #currentRoomId {
+      font-weight: 700;
+      color: #667eea;
+      font-size: 1.1rem;
+    }
+
+    #leaveCall {
+      background: #ef4444;
+      color: white;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    #leaveCall:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+    }
+
+    #videoGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 15px;
+      width: 100%;
+    }
+
+    #localVideoWrapper, .remoteVideoWrapper {
+      position: relative;
+      background: #1f2937;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
     video {
-        max-width: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-}
 
-/* ======== RODAPÉ ======== */
-.footer {
-    text-align: center;
-    padding-top: 15px;
-    font-size: 14px;
-    opacity: 0.7;
-}
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      #lobby {
+        padding: 25px;
+        max-width: 100%;
+      }
+
+      input, button {
+        padding: 12px 16px;
+        font-size: 15px;
+      }
+
+      #room {
+        padding: 15px;
+      }
+
+      #videoGrid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      #room > div:first-child {
+        font-size: 0.9rem;
+      }
+
+      #currentRoomId {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 1.3rem;
+      }
+
+      #lobby {
+        padding: 20px;
+      }
+
+      input, button {
+        padding: 10px 14px;
+        font-size: 14px;
+      }
+
+      #videoGrid {
+        gap: 10px;
+      }
+    }
+
+    /* Landscape mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+      body {
+        padding: 10px;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+      }
+
+      #videoGrid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
